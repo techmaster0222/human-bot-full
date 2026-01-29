@@ -1,0 +1,72 @@
+# =============================================================================
+# AdsPower Bot Engine - Git Ignore
+# =============================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Linting
+.ruff_cache/
+.mypy_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment & Secrets
+.env
+.env.local
+*.pem
+*.key
+credentials.json
+
+# Logs & Data
+logs/
+*.log
+data/
+*.db
+
+# Screenshots & Outputs
+screenshots/
+*.png
+*.jpg
+*.jpeg
+
+# Node.js (dashboard)
+node_modules/
+dist/
+.npm
+.cache/
+.vite/
+
+# Build artifacts
+build/
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary
+tmp/
+temp/
+*.tmp

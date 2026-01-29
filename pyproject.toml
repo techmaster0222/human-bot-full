@@ -1,0 +1,33 @@
+[project]
+name = "adspower-bot-engine"
+version = "1.0.0"
+description = "Bot automation framework with AdsPower and IPRoyal integration"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = ["-v", "--tb=short", "-ra", "--strict-markers"]
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks integration tests",
+    "playwright: marks playwright tests",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+exclude = '''/(\.git|\.venv|venv|__pycache__|node_modules|dashboard)/'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [".git", ".venv", "venv", "__pycache__", "node_modules", "dashboard"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "C4", "UP"]
+ignore = ["E501", "B008", "B905"]

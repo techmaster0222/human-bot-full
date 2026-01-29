@@ -1,0 +1,32 @@
+# =============================================================================
+# AdsPower Bot Engine - Python Dependencies
+# =============================================================================
+
+# Core - Browser Automation
+playwright>=1.40.0
+
+# Core - HTTP Requests
+requests>=2.31.0
+httpx>=0.25.0
+
+# Core - Logging
+loguru>=0.7.0
+
+# Core - Data Processing
+numpy>=1.24.0
+
+# Configuration
+python-dotenv>=1.0.0
+PyYAML>=6.0.1
+
+# Testing & Evaluation
+scipy>=1.11.0
+
+# API Server & Dashboard
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+websockets>=12.0
+pydantic>=2.5.0
+
+# API Security
+slowapi>=0.1.9

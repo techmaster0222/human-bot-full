@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+env:
+  PYTHON_VERSION: "3.10"
+  NODE_VERSION: "18"
+
+jobs:
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install ruff black
+      - run: ruff check src/ tests/
+      - run: black --check --diff src/ tests/
+
+  test-python:
+    name: Python Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      - run: pip install -r requirements.txt && pip install pytest pytest-asyncio pytest-cov httpx
+      - run: playwright install chromium
+      - name: Run tests
+        env:
+          API_KEY: test_api_key
+        run: pytest tests/ -v --cov=src -m "not slow and not integration"
+
+  build-dashboard:
+    name: Build Dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: dashboard/package-lock.json
+      - run: cd dashboard && npm ci && npm run build
+        env:
+          VITE_API_URL: http://localhost:8000
+          VITE_API_KEY: test_key
