@@ -13,18 +13,6 @@ env/
 .venv/
 ENV/
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-coverage.xml
-*.cover
-.hypothesis/
-
-# Linting
-.ruff_cache/
-.mypy_cache/
-
 # IDE
 .idea/
 .vscode/
@@ -56,7 +44,6 @@ node_modules/
 dist/
 .npm
 .cache/
-.vite/
 
 # Build artifacts
 build/

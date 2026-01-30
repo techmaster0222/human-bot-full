@@ -8,17 +8,17 @@ This module provides:
 - EventStore: SQLite-backed event storage
 """
 
+from .logger import EventLogger
+from .store import EventQueryResult, EventStore
 from .types import (
-    EventType,
     Event,
-    create_session_event,
-    create_profile_event,
-    create_proxy_event,
+    EventType,
     create_behavior_event,
     create_error_event,
+    create_profile_event,
+    create_proxy_event,
+    create_session_event,
 )
-from .store import EventStore, EventQueryResult
-from .logger import EventLogger
 
 __all__ = [
     "EventType",

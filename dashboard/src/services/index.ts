@@ -1,1 +1,2 @@
-export { default as apiClient } from './api'
+export { apiClient } from './api'
+export { wsService, WebSocketService } from './websocket'

@@ -1,0 +1,196 @@
+.ip-status {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+}
+
+.ip-health-summary {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.health-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: var(--item-bg);
+  border: 1px solid var(--border-color);
+}
+
+.health-item.healthy {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.health-item.flagged {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.health-item.blacklisted {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.health-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.health-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.health-item.healthy .health-value {
+  color: var(--success-color);
+}
+
+.health-item.flagged .health-value {
+  color: var(--warning-color);
+}
+
+.health-item.blacklisted .health-value {
+  color: var(--error-color);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.proxy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.proxy-item {
+  background: var(--item-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.proxy-item.healthy {
+  border-left: 3px solid var(--success-color);
+}
+
+.proxy-item.flagged {
+  border-left: 3px solid var(--warning-color);
+}
+
+.proxy-item.blacklisted {
+  border-left: 3px solid var(--error-color);
+}
+
+.proxy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.proxy-url {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.proxy-status {
+  font-size: 0.875rem;
+}
+
+.proxy-status.active {
+  color: var(--success-color);
+}
+
+.proxy-status.inactive {
+  color: var(--text-muted);
+}
+
+.proxy-metrics {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.metric-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.metric-value {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .ip-status {
+    padding: 1rem;
+  }
+  
+  .ip-health-summary {
+    justify-content: space-between;
+  }
+  
+  .health-item {
+    flex: 1;
+    min-width: 80px;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 0.5rem;
+  }
+  
+  .health-label {
+    font-size: 0.65rem;
+  }
+  
+  .proxy-list {
+    max-height: 250px;
+  }
+  
+  .proxy-item {
+    padding: 0.75rem;
+  }
+  
+  .proxy-url {
+    font-size: 0.7rem;
+  }
+  
+  .proxy-metrics {
+    gap: 0.5rem;
+  }
+  
+  .metric-label {
+    font-size: 0.6rem;
+  }
+  
+  .metric-value {
+    font-size: 0.7rem;
+  }
+}

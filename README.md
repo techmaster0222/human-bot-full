@@ -1,113 +1,286 @@
 # AdsPower Bot Engine
 
-A human-like browser automation framework with AdsPower fingerprint browsers and IPRoyal residential proxies.
+A production-ready bot automation framework with AdsPower browser fingerprinting, IPRoyal proxy rotation, and human-like behavior simulation.
 
 ## Features
 
-- **Human-like Behavior**: Bezier mouse movements, Weibull timing distributions, natural scrolling
-- **Anti-Detection**: AdsPower browser fingerprinting + residential proxies
-- **Real-time Dashboard**: Monitor sessions, events, and proxy health
-- **API Server**: RESTful API with WebSocket for live updates
-
-## Quick Start
-
-### 1. Install Dependencies
-
-```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-playwright install chromium
-```
-
-### 2. Configure Environment
-
-```bash
-cp .env.example .env
-# Edit .env with your credentials
-```
-
-### 3. Start Services
-
-```bash
-# Option A: Start everything
-./scripts/start_all.sh
-
-# Option B: Start individually
-./scripts/start_api.sh      # API server (port 8000)
-./scripts/start_dashboard.sh # Dashboard (port 5173)
-```
-
-### 4. Run Bot
-
-```bash
-python main.py
-```
+- **Browser Automation**: AdsPower integration with unique fingerprints per session
+- **Proxy Management**: IPRoyal residential proxies with intelligent rotation
+- **Human Behavior**: Natural mouse movements, typing, scrolling, and timing
+- **Real-time Dashboard**: React + TypeScript dashboard with WebSocket updates
+- **Session Tracking**: SQLite-based event logging and statistics
+- **IP Health Monitoring**: Automatic proxy scoring and blacklisting
 
 ## Project Structure
 
 ```
 ads_project/
-├── src/                 # Python source code
-│   ├── api/            # FastAPI server
-│   ├── adspower/       # AdsPower integration
-│   ├── behavior/       # Human-like behaviors
-│   ├── bot/            # Bot session management
+├── src/
+│   ├── adspower/       # AdsPower browser management
+│   ├── api/            # FastAPI backend + WebSocket
+│   ├── bot/            # Bot actions and human behavior
 │   ├── proxy/          # IPRoyal proxy management
-│   └── core/           # Orchestration
-├── dashboard/          # React frontend
-├── scripts/            # Shell scripts
-├── tests/              # Test suite
-├── docs/               # Documentation
-└── config/             # Configuration files
+│   └── core/           # Configuration and orchestration
+├── dashboard/          # React + TypeScript frontend
+├── scripts/            # Startup scripts
+├── config/             # YAML configuration
+├── data/               # SQLite databases
+└── logs/               # Application logs
 ```
 
-## Configuration
+## Quick Start
 
-Edit `.env` file:
+### Prerequisites
 
-| Variable | Description |
-|----------|-------------|
-| `ADSPOWER_API_URL` | AdsPower local API |
-| `ADSPOWER_API_KEY` | AdsPower API key |
-| `IPROYAL_USERNAME` | IPRoyal username |
-| `IPROYAL_PASSWORD` | IPRoyal password |
-| `API_KEY` | Dashboard API key |
+1. **Python 3.10+**
+2. **Node.js 18+** (for dashboard)
+3. **AdsPower** browser running locally
+4. **IPRoyal** account with residential proxies
 
-## Testing
+### Installation
 
 ```bash
-# Run unit tests
+# Clone and enter project
+cd ads_project
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+playwright install chromium
+
+# Install dashboard dependencies
+cd dashboard && npm install && cd ..
+```
+
+### Configuration
+
+1. Copy environment template:
+```bash
+cp .env.example .env
+```
+
+2. Edit `.env` with your credentials:
+```env
+ADSPOWER_API_URL=http://localhost:50325
+ADSPOWER_API_KEY=your_api_key
+
+IPROYAL_USERNAME=your_username
+IPROYAL_PASSWORD=your_password
+```
+
+3. Review `config/settings.yaml` for additional options.
+
+### Running
+
+**Start API Server** (required):
+```bash
+./scripts/start_api.sh
+# API available at http://localhost:8000
+```
+
+**Start Dashboard** (optional):
+```bash
+./scripts/start_dashboard.sh
+# Dashboard at http://localhost:3000
+```
+
+**Start AdsPower** (VPS):
+```bash
+./start_adspower.sh
+```
+
+## Usage
+
+### Basic Bot Session
+
+```python
+import asyncio
+from src.api import get_tracker
+
+tracker = get_tracker(use_local=True)
+
+# Start a tracked session
+session_id = tracker.start_session(
+    profile_id="my_profile",
+    proxy="geo.iproyal.com:12321",
+    country="US"
+)
+
+# Your bot logic here...
+
+# End session (automatically tracks proxy stats)
+tracker.end_session(session_id, success=True)
+```
+
+### Running Bot Detection Test
+
+```bash
+python my_test.py
+```
+
+### Using the Orchestrator
+
+```python
+from src.core import load_config, BotOrchestrator
+from src.bot import BotSession
+
+config = load_config()
+
+async def my_task(session: BotSession):
+    await session.visit_page("https://example.com")
+    await session.simulate_reading(2000)
+    await session.scroll("down")
+
+# Run with orchestrator (see main.py for full examples)
+```
+
+## API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/health` | GET | Health check |
+| `/api/sessions` | GET | List sessions |
+| `/api/stats` | GET | Statistics |
+| `/api/events` | GET | Event log |
+| `/api/ip/status` | GET | Proxy health |
+| `/ws` | WS | Real-time updates |
+
+## Dashboard Features
+
+- **Stats Cards**: Total/Active/Success/Failed sessions
+- **Activity Chart**: Session timeline with Recharts
+- **Session List**: Real-time session monitoring
+- **IP Status**: Proxy health tracking (Healthy/Flagged/Blacklisted)
+- **WebSocket**: Live updates without polling
+
+## Proxy Health Logic
+
+| Status | Condition |
+|--------|-----------|
+| Healthy | Success rate ≥ 80% |
+| Flagged | Success rate 50-80% |
+| Blacklisted | Success rate < 50% OR disabled |
+
+Proxies are auto-disabled after 3 consecutive failures with a 30-minute cooldown.
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `ADSPOWER_API_URL` | AdsPower local API | `http://localhost:50325` |
+| `ADSPOWER_API_KEY` | AdsPower API key | - |
+| `IPROYAL_USERNAME` | IPRoyal username | - |
+| `IPROYAL_PASSWORD` | IPRoyal password | - |
+| `IPROYAL_HOST` | Proxy host | `geo.iproyal.com` |
+| `IPROYAL_PORT` | Proxy port | `12321` |
+
+## Development
+
+### Running Tests
+
+```bash
+# Install test dependencies
+pip install -r requirements-dev.txt
+
+# Run all tests
 make test
 
-# Run with coverage
+# Run fast tests (skip slow/integration)
+make test-fast
+
+# Run with coverage report
 make test-cov
 
-# Test dashboard (10 sessions)
+# Bot detection test (requires AdsPower)
+python my_test.py
+
+# Dashboard monitoring test (10 sessions)
 python run_10_sessions.py
 ```
+
+### Code Quality
+
+```bash
+# Run linter
+make lint
+
+# Format code
+make format
+
+# Run all checks (lint + format)
+make check
+```
+
+### Building Dashboard
+
+```bash
+cd dashboard
+npm run build
+```
+
+### Checking Logs
+
+```bash
+tail -f logs/api_events.log
+```
+
+### CI/CD
+
+GitHub Actions runs automatically on push/PR:
+- Linting (Ruff + Black)
+- Unit tests (pytest)
+- Integration tests
+- Dashboard build
+- Security scans
+
+## Extending the Project
+
+### Adding New Behaviors
+
+1. Create a new file in `src/behavior/`:
+
+```python
+# src/behavior/my_behavior.py
+class MyBehavior:
+    async def do_something(self, page):
+        # Your behavior logic
+        pass
+```
+
+2. Export from `src/behavior/__init__.py`
+3. Use in `src/bot/actions.py`
+
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for detailed examples.
+
+### Adding New Proxy Providers
+
+1. Create `src/proxy/my_provider.py`
+2. Implement `get_proxy()` and `get_sticky_proxy()` methods
+3. Export from `src/proxy/__init__.py`
+
+### Adding API Endpoints
+
+1. Define Pydantic models in `src/api/server.py`
+2. Add endpoint with `@app.get()` or `@app.post()`
+3. Add authentication with `Depends(verify_api_key)`
 
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture |
-| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | Development guide |
-| [docs/API.md](docs/API.md) | API reference |
-| [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) | Project report |
+| [README.md](README.md) | Quick start guide (this file) |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture with diagrams |
+| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | Development guide & extending |
+| [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) | Full project report |
 
-## API Endpoints
+## API Documentation
 
-- `GET /api/health` - Health check
-- `GET /api/sessions` - List sessions
-- `GET /api/events` - List events
-- `GET /api/stats` - Statistics
-- `WS /ws` - WebSocket for live updates
-
-Interactive docs: http://localhost:8000/docs
+Interactive API docs available at:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
 
 ## License
 

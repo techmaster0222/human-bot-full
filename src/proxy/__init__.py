@@ -1,6 +1,6 @@
 """Proxy Management Module"""
 
-from .iproyal import IPRoyalProxy, ProxyConfig, ProxySession, ProxyRotator
+from .iproyal import IPRoyalProxy, ProxyConfig, ProxyRotator, ProxySession
 
 __all__ = [
     "IPRoyalProxy",

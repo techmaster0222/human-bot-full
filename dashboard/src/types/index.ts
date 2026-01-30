@@ -1,23 +1,26 @@
+/**
+ * TypeScript Types for Dashboard
+ */
+
 export interface Session {
-  id: string
+  session_id: string
   profile_id: string
   device: string
-  target_url: string
-  proxy: string
-  country: string
-  status: 'active' | 'completed' | 'failed'
   start_time: string
-  end_time?: string
+  target_url?: string
+  proxy?: string
+  country?: string
+  status: 'active' | 'completed' | 'failed'
   duration?: number
   success?: boolean
 }
 
-export interface Event {
-  id: number
-  session_id: string
-  event_type: string
-  timestamp: string
-  data: Record<string, unknown>
+export interface PaginatedSessions {
+  sessions: Session[]
+  total: number
+  page: number
+  per_page: number
+  total_pages: number
 }
 
 export interface Stats {
@@ -25,20 +28,62 @@ export interface Stats {
   active_sessions: number
   successful_sessions: number
   failed_sessions: number
+  total_events: number
+  average_duration: number
   success_rate: number
-  proxy_stats: ProxyStats[]
-  ip_health: IPHealth
+  proxy_stats: ProxyStat[]
+  ip_health: {
+    healthy: number
+    flagged: number
+    blacklisted: number
+  }
 }
 
-export interface ProxyStats {
-  proxy_id: string
+export interface ProxyStat {
+  url: string
+  uses: number
+  successes: number
+  failures: number
   success_rate: number
-  avg_latency_ms: number
   status: 'healthy' | 'flagged' | 'blacklisted'
+  enabled: boolean
+  last_used?: string
+  avg_latency_ms?: number
+  country?: string
 }
 
-export interface IPHealth {
-  healthy: number
-  flagged: number
-  blacklisted: number
+export interface BotEvent {
+  id?: number
+  type: string
+  timestamp: string
+  session_id?: string
+  data: Record<string, any>
 }
+
+export interface PaginatedEvents {
+  events: BotEvent[]
+  total: number
+  page: number
+  per_page: number
+  total_pages: number
+}
+
+export interface HealthCheck {
+  status: string
+  timestamp: string
+  active_sessions: number
+  database_path: string
+  version: string
+  auth_enabled: boolean
+  rate_limiting: boolean
+}
+
+export interface SessionFilters {
+  status?: 'active' | 'completed' | 'failed' | ''
+  country?: string
+  search?: string
+  page: number
+  per_page: number
+}
+
+export type Theme = 'dark' | 'light'

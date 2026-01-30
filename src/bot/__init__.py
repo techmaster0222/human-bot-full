@@ -1,8 +1,8 @@
 """Human-like Bot Behavior Module"""
 
-from .human_behavior import HumanBehavior, BehaviorConfig
 from .actions import BotActions
-from .session import BotSession, SessionManager, SessionConfig, SessionStats
+from .human_behavior import BehaviorConfig, HumanBehavior
+from .session import BotSession, SessionConfig, SessionManager, SessionStats
 
 __all__ = [
     "HumanBehavior",
