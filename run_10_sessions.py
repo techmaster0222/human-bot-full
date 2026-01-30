@@ -77,7 +77,9 @@ async def run_session(session_num: int, client: httpx.AsyncClient) -> bool:
     )
 
     if proxy_ok:
-        logger.info(f"[Session {session_num}] Proxy OK - Real IP: {real_ip} (latency: {latency:.2f}s)")
+        logger.info(
+            f"[Session {session_num}] Proxy OK - Real IP: {real_ip} (latency: {latency:.2f}s)"
+        )
     else:
         logger.warning(f"[Session {session_num}] Proxy test failed, using hostname")
 
@@ -103,7 +105,9 @@ async def run_session(session_num: int, client: httpx.AsyncClient) -> bool:
     try:
         # Simulate browsing
         await api_request(
-            client, "POST", "/api/events",
+            client,
+            "POST",
+            "/api/events",
             json={"session_id": session_id, "event_type": "navigation", "details": {"url": target}},
         )
 
@@ -111,15 +115,27 @@ async def run_session(session_num: int, client: httpx.AsyncClient) -> bool:
         await asyncio.sleep(browse_time * 0.3)
 
         await api_request(
-            client, "POST", "/api/events",
-            json={"session_id": session_id, "event_type": "page_load", "details": {"load_time_ms": random.randint(500, 3000)}},
+            client,
+            "POST",
+            "/api/events",
+            json={
+                "session_id": session_id,
+                "event_type": "page_load",
+                "details": {"load_time_ms": random.randint(500, 3000)},
+            },
         )
 
         await asyncio.sleep(browse_time * 0.3)
 
         await api_request(
-            client, "POST", "/api/events",
-            json={"session_id": session_id, "event_type": "scroll", "details": {"pixels": random.randint(100, 800)}},
+            client,
+            "POST",
+            "/api/events",
+            json={
+                "session_id": session_id,
+                "event_type": "scroll",
+                "details": {"pixels": random.randint(100, 800)},
+            },
         )
 
         await asyncio.sleep(browse_time * 0.4)
@@ -129,8 +145,14 @@ async def run_session(session_num: int, client: httpx.AsyncClient) -> bool:
             success = False
             error_msg = random.choice(ERRORS)
             await api_request(
-                client, "POST", "/api/events",
-                json={"session_id": session_id, "event_type": "error", "details": {"message": error_msg}},
+                client,
+                "POST",
+                "/api/events",
+                json={
+                    "session_id": session_id,
+                    "event_type": "error",
+                    "details": {"message": error_msg},
+                },
             )
             logger.warning(f"[Session {session_num}] Failed: {error_msg}")
         else:
@@ -143,8 +165,15 @@ async def run_session(session_num: int, client: httpx.AsyncClient) -> bool:
 
     duration = asyncio.get_event_loop().time() - start_time
     await api_request(
-        client, "POST", "/api/sessions/end",
-        json={"session_id": session_id, "success": success, "duration": duration, "error": error_msg},
+        client,
+        "POST",
+        "/api/sessions/end",
+        json={
+            "session_id": session_id,
+            "success": success,
+            "duration": duration,
+            "error": error_msg,
+        },
     )
 
     return success
@@ -155,7 +184,7 @@ async def main():
     logger.info("=" * 60)
     logger.info("RUNNING 10 BOT SESSIONS")
     logger.info("=" * 60)
-    logger.info(f"Dashboard: http://localhost:3000")
+    logger.info("Dashboard: http://localhost:3000")
     logger.info(f"API: {API_URL}")
     logger.info("=" * 60)
 
@@ -187,7 +216,7 @@ async def main():
     logger.info("=" * 60)
     logger.info("SUMMARY")
     logger.info("=" * 60)
-    logger.info(f"  Total Sessions: 10")
+    logger.info("  Total Sessions: 10")
     logger.info(f"  Successful: {successful}")
     logger.info(f"  Failed: {10 - successful}")
     logger.info(f"  Success Rate: {successful * 10}%")

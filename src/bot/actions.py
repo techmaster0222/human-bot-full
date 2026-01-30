@@ -455,7 +455,7 @@ class BotActions:
                 state=state, timeout=timeout or self.default_timeout
             )
             return True
-        except:
+        except Exception:
             return False
 
     async def wait_for_navigation(self, wait_until: str = "domcontentloaded"):
@@ -502,28 +502,28 @@ class BotActions:
         """Check if element is visible"""
         try:
             return await self.page.locator(selector).first.is_visible()
-        except:
+        except Exception:
             return False
 
     async def is_enabled(self, selector: str) -> bool:
         """Check if element is enabled"""
         try:
             return await self.page.locator(selector).first.is_enabled()
-        except:
+        except Exception:
             return False
 
     async def get_text(self, selector: str) -> str:
         """Get text content from element"""
         try:
             return await self.page.locator(selector).first.text_content() or ""
-        except:
+        except Exception:
             return ""
 
     async def get_attribute(self, selector: str, attribute: str) -> str | None:
         """Get attribute value from element"""
         try:
             return await self.page.locator(selector).first.get_attribute(attribute)
-        except:
+        except Exception:
             return None
 
     async def get_element_count(self, selector: str) -> int:

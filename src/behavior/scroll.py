@@ -79,9 +79,7 @@ class ScrollBehaviorEngine:
         await engine.scroll_to_element("div.content")
     """
 
-    def __init__(
-        self, page: Page, seed: int | None = None, config: ScrollConfig | None = None
-    ):
+    def __init__(self, page: Page, seed: int | None = None, config: ScrollConfig | None = None):
         """
         Initialize scroll behavior engine.
 
