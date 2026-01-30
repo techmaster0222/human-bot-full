@@ -3,8 +3,7 @@
 import asyncio
 import os
 import tempfile
-from pathlib import Path
-from typing import Generator
+from collections.abc import Generator
 from unittest.mock import AsyncMock, patch
 
 import pytest

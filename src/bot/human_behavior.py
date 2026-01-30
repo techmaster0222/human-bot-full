@@ -163,7 +163,7 @@ class HumanBehavior:
         delays = []
         speed_mult = self._speed_multipliers.get(self.config.mouse_speed, 1.0)
 
-        for i in range(path_length):
+        for _ in range(path_length):
             # Base delay
             base_delay = random.uniform(0.001, 0.005) * speed_mult
 
