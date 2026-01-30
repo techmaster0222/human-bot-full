@@ -1,4 +1,4 @@
-# AdsPower Bot Engine
+# Human Bot Engine
 
 A production-ready bot automation framework with AdsPower browser fingerprinting, IPRoyal proxy rotation, and human-like behavior simulation.
 
