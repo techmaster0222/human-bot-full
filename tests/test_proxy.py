@@ -6,8 +6,6 @@ Comprehensive tests for proxy management, rotation, and statistics.
 
 from datetime import datetime, timedelta
 
-import pytest
-
 from src.proxy import IPRoyalProxy, ProxyConfig, ProxySession
 
 # ============== ProxyConfig Tests ==============
