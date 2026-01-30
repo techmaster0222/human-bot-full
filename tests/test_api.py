@@ -13,6 +13,7 @@ def client():
     os.environ["ALLOWED_ORIGINS"] = "http://localhost:3000"
     os.environ["RATE_LIMIT"] = "1000/minute"
     from src.api.server import app
+
     return TestClient(app)
 
 

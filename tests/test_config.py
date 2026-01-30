@@ -36,6 +36,7 @@ class TestDatabaseLogger:
     @pytest.fixture
     def db_logger(self, tmp_path):
         from src.api.database_logger import DatabaseLogger
+
         return DatabaseLogger(db_path=str(tmp_path / "test.db"))
 
     def test_creation(self, db_logger):
@@ -66,6 +67,7 @@ class TestProxyStatsManager:
     @pytest.fixture
     def stats_manager(self, tmp_path):
         from src.proxy.stats import ProxyStatsManager
+
         return ProxyStatsManager(db_path=str(tmp_path / "stats.db"))
 
     def test_record_success(self, stats_manager):
