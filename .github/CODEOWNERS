@@ -1,0 +1,33 @@
+# CODEOWNERS - Auto-assign reviewers for PRs
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything
+* @techmaster0222
+
+# Backend (Python)
+/src/ @techmaster0222
+/tests/ @techmaster0222
+*.py @techmaster0222
+
+# Frontend (Dashboard)
+/dashboard/ @techmaster0222
+*.tsx @techmaster0222
+*.ts @techmaster0222
+*.css @techmaster0222
+
+# Infrastructure & DevOps
+/.github/ @techmaster0222
+/scripts/ @techmaster0222
+Makefile @techmaster0222
+Dockerfile @techmaster0222
+docker-compose*.yml @techmaster0222
+
+# Configuration (requires senior review)
+/config/ @techmaster0222
+.env.example @techmaster0222
+requirements*.txt @techmaster0222
+package.json @techmaster0222
+
+# Documentation
+/docs/ @techmaster0222
+*.md @techmaster0222
