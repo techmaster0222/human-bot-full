@@ -7,12 +7,14 @@ import pytest
 try:
     import numpy as np
     from scipy import stats
+
     SCIPY_AVAILABLE = True
 except ImportError:
     SCIPY_AVAILABLE = False
 
 try:
-    from src.behavior import Point
+    from src.behavior import Point  # noqa: F401
+
     BEHAVIOR_AVAILABLE = True
 except ImportError:
     BEHAVIOR_AVAILABLE = False
@@ -23,31 +25,36 @@ class TestPoint:
     """Point class tests."""
 
     def test_creation(self):
-        from src.behavior import Point
+        from src.behavior import Point  # noqa: F401
+
         p = Point(100.0, 200.0)
         assert p.x == 100.0
         assert p.y == 200.0
 
     def test_addition(self):
-        from src.behavior import Point
+        from src.behavior import Point  # noqa: F401
+
         result = Point(100, 100) + Point(50, 50)
         assert result.x == 150
         assert result.y == 150
 
     def test_subtraction(self):
-        from src.behavior import Point
+        from src.behavior import Point  # noqa: F401
+
         result = Point(100, 100) - Point(30, 20)
         assert result.x == 70
         assert result.y == 80
 
     def test_multiplication(self):
-        from src.behavior import Point
+        from src.behavior import Point  # noqa: F401
+
         result = Point(100, 50) * 2.0
         assert result.x == 200
         assert result.y == 100
 
     def test_distance(self):
-        from src.behavior import Point
+        from src.behavior import Point  # noqa: F401
+
         distance = Point(0, 0).distance_to(Point(3, 4))
         assert distance == pytest.approx(5.0, abs=0.001)
 
@@ -113,6 +120,7 @@ class TestTimingLogic:
 
     def test_delay_bounds(self):
         import random
+
         for _ in range(100):
             delay = random.uniform(0.5, 2.0)
             assert 0.5 <= delay <= 2.0

@@ -316,9 +316,7 @@ class ProxySessionManager:
 
         return "_".join(parts)
 
-    def test_session(
-        self, session: ProxySession, timeout: int = None
-    ) -> tuple[bool, str | None]:
+    def test_session(self, session: ProxySession, timeout: int = None) -> tuple[bool, str | None]:
         """
         Test if a proxy session is working.
 

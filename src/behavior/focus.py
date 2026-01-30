@@ -77,9 +77,7 @@ class TabFocusSimulator:
             await submit_form()
     """
 
-    def __init__(
-        self, page: Page, seed: int | None = None, config: FocusConfig | None = None
-    ):
+    def __init__(self, page: Page, seed: int | None = None, config: FocusConfig | None = None):
         """
         Initialize focus simulator.
 
