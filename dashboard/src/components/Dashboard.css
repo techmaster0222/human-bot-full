@@ -4,24 +4,6 @@
   background: var(--bg-primary);
 }
 
-.dashboard-title-header {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.dashboard-title-header h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.dashboard-title-header p {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin: 0.25rem 0 0 0;
-}
-
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -130,20 +112,6 @@
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 1.5rem;
-  align-items: stretch;
-}
-
-.dashboard-grid > .dashboard-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.dashboard-grid > .dashboard-section > * {
-  flex: 1;
-  min-height: 450px;
-  max-height: 550px;
-  display: flex;
-  flex-direction: column;
 }
 
 /* Tablet */
