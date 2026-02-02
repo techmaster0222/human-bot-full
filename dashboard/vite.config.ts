@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
+    allowedHosts: ['toworld365.world', 'www.toworld365.world'],
     proxy: {
       '/api': {
         target: 'http://localhost:8000',

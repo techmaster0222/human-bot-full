@@ -98,27 +98,89 @@ export default function Dashboard() {
     return () => clearInterval(interval)
   }, [loadData])
 
-  // WebSocket subscription
+  // WebSocket subscription - update UI directly without reloading
   useEffect(() => {
     const unsubscribe = wsService.subscribe((event) => {
+      // Add event to the list
       setEvents((prev) => [...prev.slice(-99), event])
-      // Refresh stats on new event
-      loadData()
-      // Refresh sessions if it's a session event
-      if (event.type === 'session_start' || event.type === 'session_end') {
-        loadSessions(sessionFilters)
+      setLastUpdated(new Date())
+      
+      // Update stats incrementally based on event type
+      if (event.type === 'session_start') {
+        // Add new session directly to the list
+        const newSession = {
+          session_id: event.session_id || event.data?.session_id || `session-${Date.now()}`,
+          profile_id: event.data?.profile_id || '',
+          device: event.data?.device || 'unknown',
+          start_time: event.timestamp,
+          target_url: event.data?.target_url || event.data?.url,
+          proxy: event.data?.proxy,
+          country: event.data?.country,
+          status: 'active' as const,
+        }
+        
+        setSessionsData((prev) => {
+          if (!prev) return { sessions: [newSession], total: 1, page: 1, per_page: 20, total_pages: 1 }
+          return {
+            ...prev,
+            sessions: [newSession, ...prev.sessions.slice(0, prev.per_page - 1)],
+            total: prev.total + 1,
+          }
+        })
+        
+        // Update stats
+        setStats((prev) => prev ? {
+          ...prev,
+          total_sessions: prev.total_sessions + 1,
+          active_sessions: prev.active_sessions + 1,
+        } : prev)
+      }
+      
+      if (event.type === 'session_end') {
+        const sessionId = event.session_id || event.data?.session_id
+        const success = event.data?.success !== false
+        
+        // Update session status in list
+        setSessionsData((prev) => {
+          if (!prev) return prev
+          return {
+            ...prev,
+            sessions: prev.sessions.map(s => 
+              s.session_id === sessionId 
+                ? { ...s, status: success ? 'completed' as const : 'failed' as const, duration: event.data?.duration }
+                : s
+            ),
+          }
+        })
+        
+        // Update stats
+        setStats((prev) => prev ? {
+          ...prev,
+          active_sessions: Math.max(0, prev.active_sessions - 1),
+          successful_sessions: success ? prev.successful_sessions + 1 : prev.successful_sessions,
+          failed_sessions: success ? prev.failed_sessions : prev.failed_sessions + 1,
+          success_rate: prev.total_sessions > 0 
+            ? ((success ? prev.successful_sessions + 1 : prev.successful_sessions) / prev.total_sessions) * 100 
+            : 0,
+        } : prev)
       }
     })
 
     const statusInterval = setInterval(() => {
       setWsConnected(wsService.isConnected())
     }, 1000)
+    
+    // Refresh stats periodically (every 30s) to sync with server
+    const statsInterval = setInterval(() => {
+      apiClient.getStats().then(setStats).catch(console.error)
+    }, 30000)
 
     return () => {
       unsubscribe()
       clearInterval(statusInterval)
+      clearInterval(statsInterval)
     }
-  }, [loadData, loadSessions, sessionFilters])
+  }, [])
 
   if (loading) {
     return (
@@ -131,7 +193,13 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
-      {/* Header with theme toggle */}
+      {/* Title Header */}
+      <header className="dashboard-title-header">
+        <h1>Human Bot Dashboard</h1>
+        <p>Real-time Bot Engine Monitoring</p>
+      </header>
+
+      {/* Status Bar with theme toggle */}
       <div className="dashboard-header">
         <div className="dashboard-status">
           <div className={`status-indicator ${apiConnected ? 'connected' : 'disconnected'}`}>

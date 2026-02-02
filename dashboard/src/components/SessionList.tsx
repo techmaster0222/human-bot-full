@@ -78,7 +78,7 @@ export default function SessionList({ sessionsData, onFilterChange, loading }: S
           disabled={exporting}
           title="Export to CSV"
         >
-          {exporting ? '⏳ Exporting...' : '📥 Export'}
+          {exporting ? '⏳ Exporting...' : 'Export as CSV'}
         </button>
       </div>
 

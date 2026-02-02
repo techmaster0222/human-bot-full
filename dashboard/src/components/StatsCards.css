@@ -73,21 +73,63 @@
   padding: 2rem;
 }
 
-.stat-card.success {
-  border-left: 3px solid var(--success-color);
+.stat-card.total {
+  border-left: 3px solid #6366f1;
 }
 
-.stat-card.error {
-  border-left: 3px solid var(--error-color);
+.stat-card.total .stat-icon {
+  color: #6366f1;
 }
 
 .stat-card.active {
-  border-left: 3px solid var(--success-color);
+  border-left: 3px solid #10b981;
+}
+
+.stat-card.active .stat-icon {
+  color: #10b981;
+}
+
+.stat-card.success {
+  border-left: 3px solid #10b981;
+}
+
+.stat-card.success .stat-icon {
+  color: #10b981;
+}
+
+.stat-card.error {
+  border-left: 3px solid #ef4444;
+}
+
+.stat-card.error .stat-icon {
+  color: #ef4444;
+}
+
+.stat-card.rate {
+  border-left: 3px solid #8b5cf6;
+}
+
+.stat-card.rate .stat-icon {
+  color: #8b5cf6;
+}
+
+.stat-card.duration {
+  border-left: 3px solid #f59e0b;
+}
+
+.stat-card.duration .stat-icon {
+  color: #f59e0b;
 }
 
 .stat-icon {
-  font-size: 1.5rem;
-  line-height: 1;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.stat-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .stat-content {

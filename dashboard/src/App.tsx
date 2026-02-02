@@ -26,10 +26,6 @@ function App() {
   return (
     <ThemeProvider>
       <div className="app">
-        <header className="app-header">
-          <h1>Human Bot Dashboard</h1>
-          <p>Real-time Bot Engine Monitoring</p>
-        </header>
         <Dashboard />
       </div>
     </ThemeProvider>

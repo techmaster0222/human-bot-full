@@ -15,7 +15,7 @@ from src.proxy import IPRoyalProxy
 
 TEST_SITES = [
     ("sannysoft", "https://bot.sannysoft.com", 5),
-    ("pixelscan", "https://pixelscan.net", 8),
+    ("pixelscan", "https://pixelscan.net/fingerprint-check", 8),
     ("creepjs", "https://abrahamjuliot.github.io/creepjs", 10),
 ]
 
@@ -24,7 +24,7 @@ async def run_detection_test():
     """Run bot detection test with dashboard tracking."""
     config = load_config()
     setup_logging(config)
-    tracker = get_tracker(use_local=True, track_proxy_stats=True)
+    tracker = get_tracker(use_local=True)
 
     logger.info("=" * 60)
     logger.info("BOT DETECTION TEST")
